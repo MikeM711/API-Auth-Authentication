@@ -14,6 +14,7 @@ module.exports = function (sequelize, Sequelize) {
             // All incoming emails will be converted to lowercase, before sent to database
             validate: { 
                 isLowercase: true,
+                isEmail: true,
             }
         },
    
