@@ -11,6 +11,10 @@ module.exports = function (sequelize, Sequelize) {
         email: {
             type: Sequelize.STRING,
             allowNull: false,
+            // All incoming emails will be converted to lowercase, before sent to database
+            validate: { 
+                isLowercase: true,
+            }
         },
    
         password: {
