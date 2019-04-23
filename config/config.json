@@ -1,0 +1,25 @@
+{
+    "development": {
+        "username": "postgres",
+        "password": "postgrespw",
+        "database": "API_Auth",
+        "host": "127.0.0.1",
+        "dialect": "postgres"
+    },
+    "test": {
+        "username": "",
+        "password": null,
+        "database": "",
+        "host": "",
+        "dialect": "mysql"
+    },
+    "production": {
+        "use_env_variable": "DATABASE_URL",
+        "username": "",
+        "password": null,
+        "database": "",
+        "host": "127.0.0.1",
+        "dialect": "postgres"
+    }
+   }
+   
