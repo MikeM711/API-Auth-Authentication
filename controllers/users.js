@@ -1,4 +1,5 @@
 const JWT = require('jsonwebtoken');
+const bCrypt = require('bcryptjs');
 const { user } = require('../models')
 const { JWT_SECRET } = require('../config/index.js')
 
@@ -17,9 +18,16 @@ module.exports = {
 
     const { email, password } = req.value.body
 
+    // Generate salt and hash
+    var generateHash = function(password) {
+      return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
+      };
+
+    var userPassword = generateHash(password);
+
     const newUser = {
       email: email,
-      password: password,
+      password: userPassword,
     }
 
     // Check to see if the user that is signing up has an email that is already in the database
@@ -44,7 +52,6 @@ module.exports = {
 
               // Generate the token
               const token = signToken(user)
-
               res.status(200).json({ token: token })
 
             })
@@ -59,7 +66,10 @@ module.exports = {
 
   signIn: async (req, res, next) => {
     // Generate Token
-
+    console.log(req.user)
+    console.log('complete')
+    const token = signToken(req.user)
+    res.status(200).json({ token })
   },
 
   secret: async (req, res, next) => {

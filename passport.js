@@ -2,6 +2,7 @@ const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt')
 const LocalStrategy = require('passport-local').Strategy
+const bCrypt = require('bcryptjs');
 const { user } = require('./models')
 const { JWT_SECRET } = require('./config')
 
@@ -39,6 +40,11 @@ passport.use(new LocalStrategy({
   usernameField: 'email'
 }, (email, password, done) => {
 
+  // compare plain text password with hashed password
+  var isValidPassword = function (userpass, password) {
+    return bCrypt.compareSync(password, userpass);
+  }
+
   // Find the user, given the email
   user.findOne({
     where: {
@@ -53,13 +59,19 @@ passport.use(new LocalStrategy({
 
       // Check if the password is correct
 
-      // If not, handle it
+      // If password is not correct, handle it
+      if (!isValidPassword(currUser.password, password)) {
+        // no errors, but you won't get the user object, because the password isn't correct
+        return done(null, false);
+      }
 
-      // Otherwise, return the user
+      // Otherwise, return the user that the client has asked for
+      done(null, currUser)
 
     })
     .catch(err => {
       console.log('User not found in DB', err)
+      done(err, false)
     })
 
 }))
