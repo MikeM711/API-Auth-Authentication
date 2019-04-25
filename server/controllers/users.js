@@ -26,6 +26,7 @@ module.exports = {
     var userPassword = generateHash(password);
 
     const newUser = {
+      method: 'local',
       email: email,
       password: userPassword,
     }
@@ -68,6 +69,13 @@ module.exports = {
     // Generate Token
     console.log(req.user)
     console.log('complete')
+    const token = signToken(req.user)
+    res.status(200).json({ token })
+  },
+
+  googleOAuth: async (req, res, next) => {
+    // Generate Token
+    console.log('google req.user value', req.user)
     const token = signToken(req.user)
     res.status(200).json({ token })
   },
