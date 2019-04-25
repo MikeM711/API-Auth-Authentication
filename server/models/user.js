@@ -1,16 +1,46 @@
 module.exports = function (sequelize, Sequelize) {
   
     const UserExport = sequelize.define('user', {
-   
         id: {
             autoIncrement: true,
             primaryKey: true,
             type: Sequelize.INTEGER
         },
+
+        // Optional for myself:
+        method: {
+            type: Sequelize.ENUM('local', 'google', 'facebook'),
+            allowNull: false,
+        },
+
+        googleId: {
+            type: Sequelize.STRING,
+        },
+
+        googleEmail: {
+            type: Sequelize.STRING,
+            validate: { 
+                isLowercase: true,
+                isEmail: true,
+            }
+        },
+
+        facebookId: {
+            type: Sequelize.STRING,
+        },
+
+        facebookEmail: {
+            type: Sequelize.STRING,
+            validate: { 
+                isLowercase: true,
+                isEmail: true,
+            }
+        },
    
         email: {
             type: Sequelize.STRING,
-            allowNull: false,
+            // allowNull: false,
+            // Above is commented out because a user may sign in with OAuth
             // All incoming emails will be converted to lowercase, before sent to database
             validate: { 
                 isLowercase: true,
@@ -20,7 +50,9 @@ module.exports = function (sequelize, Sequelize) {
    
         password: {
             type: Sequelize.STRING,
-            allowNull: false,
+            // allowNull: false,
+            // Above is commented out because a user may sign in with OAuth
+
         },
    
         })

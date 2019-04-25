@@ -44,6 +44,40 @@ passport.use('googleToken', new GooglePlusTokenStrategy({
   console.log('accessToken', accessToken)
   console.log('refreshToken', refreshToken)
   console.log('profile', profile)
+
+  // Check whether this current user exists in the database
+  user.findOne({
+    where: {
+      googleId: profile.id
+    }
+  })
+    .then(existingUser => {
+      if (existingUser) {
+        console.log('user already exists in database')
+        return done(null, existingUser)
+      }
+
+      // If new account - put them in the DB
+      const newUser = {
+        method: 'google',
+        googleId: profile.id,
+        googleEmail: profile.emails[0].value
+      }
+
+      user.create(newUser)
+        .then(DBuser => {
+          console.log("user doesn't exist in the database")
+          return done(null, DBuser)
+        })
+        .catch(err => {
+          done(err, false, err.message)
+        })
+
+    })
+    .catch(err => {
+      done(err, false, err.message)
+    })
+
 }))
 
 // LOCAL STRATEGY
