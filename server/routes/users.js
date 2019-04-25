@@ -16,4 +16,7 @@ router.route('/signin')
 router.route('/secret')
   .get(passport.authenticate('jwt', { session: false }), UsersController.secret)
 
+router.route('/oauth/google')
+  .post(passport.authenticate('googleToken', { session: false }));
+
 module.exports = router;
