@@ -2,6 +2,7 @@ const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt')
 const LocalStrategy = require('passport-local').Strategy
+const GooglePlusTokenStrategy = require('passport-google-plus-token')
 const bCrypt = require('bcryptjs');
 const { user } = require('./models')
 const { JWT_SECRET } = require('./config')
@@ -34,6 +35,16 @@ passport.use(new JwtStrategy({
       done(error, false);
     })
 }));
+
+// GOOGLE OAUTH STRATEGY
+passport.use('googleToken', new GooglePlusTokenStrategy({
+  clientID: '920654343788-ngguegn79nillrufq91h5d4vjoth4e5t.apps.googleusercontent.com',
+  clientSecret: 'kaNQAwRsxMd0CjVlQT-EKz7a'
+}, (accessToken, refreshToken, profile, done) => {
+  console.log('accessToken', accessToken)
+  console.log('refreshToken', refreshToken)
+  console.log('profile', profile)
+}))
 
 // LOCAL STRATEGY
 passport.use(new LocalStrategy({
