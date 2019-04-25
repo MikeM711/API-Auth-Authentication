@@ -54,6 +54,11 @@ passport.use('googleToken', new GooglePlusTokenStrategy({
     .then(existingUser => {
       if (existingUser) {
         console.log('user already exists in database')
+        /* This Google user is signing in
+          Don't add them to the database, but still allow them to continue to the next middleware (the GoogleOAuth "controller"), to create a token
+            That token will be used to access private routes
+            When 2nd param of done() is defined, we are considered "successful"
+        */
         return done(null, existingUser)
       }
 
@@ -67,6 +72,11 @@ passport.use('googleToken', new GooglePlusTokenStrategy({
       user.create(newUser)
         .then(DBuser => {
           console.log("user doesn't exist in the database")
+          /* This Google user is signing up
+            We will add the user to the database and allow them to continue to the next middleware (the GoogleOAuth "controller"), to create a token
+            That token will be used to access private routes
+            When 2nd param of done() is defined, we are considered "successful"
+        */
           return done(null, DBuser)
         })
         .catch(err => {
