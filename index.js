@@ -1,16 +1,5 @@
-const express = require('express');
-const morgan = require('morgan')
-const bodyParser = require('body-parser');
-const models = require('./models')
-
-const app = express();
-
-//Middleware
-app.use(morgan('dev'));
-app.use(bodyParser.json());
-
-// Routes
-app.use('/users', require('./routes/users'))
+const app = require('./server/app');
+const models = require('./server/models')
 
 // Start the server
 const PORT = process.env.PORT || 3000
@@ -31,3 +20,5 @@ app.listen(PORT, (err) => {
   }
   
 });
+
+// refactored code for easier test and feature scale
