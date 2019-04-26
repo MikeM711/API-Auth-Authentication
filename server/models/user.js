@@ -9,7 +9,7 @@ module.exports = function (sequelize, Sequelize) {
 
         // Optional for myself:
         method: {
-            type: Sequelize.ENUM('local', 'google', 'facebook'),
+            type: Sequelize.ENUM('local', 'google'),
             allowNull: false,
         },
 
@@ -18,18 +18,6 @@ module.exports = function (sequelize, Sequelize) {
         },
 
         googleEmail: {
-            type: Sequelize.STRING,
-            validate: { 
-                isLowercase: true,
-                isEmail: true,
-            }
-        },
-
-        facebookId: {
-            type: Sequelize.STRING,
-        },
-
-        facebookEmail: {
             type: Sequelize.STRING,
             validate: { 
                 isLowercase: true,
