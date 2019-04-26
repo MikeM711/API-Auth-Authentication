@@ -5,12 +5,12 @@ const LocalStrategy = require('passport-local').Strategy
 const GooglePlusTokenStrategy = require('passport-google-plus-token')
 const bCrypt = require('bcryptjs');
 const { user } = require('./models')
-const { JWT_SECRET } = require('./config')
+const config = require('./config')
 
 // JSON WEB TOKEN STRATEGY
 passport.use(new JwtStrategy({
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-  secretOrKey: JWT_SECRET
+  secretOrKey: config.JWT_SECRET
 }, (payload, done) => {
 
   // Find the users specified in token
@@ -38,8 +38,8 @@ passport.use(new JwtStrategy({
 
 // GOOGLE OAUTH STRATEGY
 passport.use('googleToken', new GooglePlusTokenStrategy({
-  clientID: '920654343788-ngguegn79nillrufq91h5d4vjoth4e5t.apps.googleusercontent.com',
-  clientSecret: 'kaNQAwRsxMd0CjVlQT-EKz7a'
+  clientID: config.oauth.google.clientID,
+  clientSecret: config.oauth.google.clientSecret
 }, (accessToken, refreshToken, profile, done) => {
   console.log('accessToken', accessToken)
   console.log('refreshToken', refreshToken)
