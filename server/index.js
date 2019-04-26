@@ -1,8 +1,9 @@
-const app = require('./server/app');
-const models = require('./server/models')
+const app = require('./app');
+const models = require('./models')
 
 // Start the server
-const PORT = process.env.PORT || 3000
+// PORT changed to 5000, because create-react-app listens to 3000
+const PORT = process.env.PORT || 5000
 app.listen(PORT, (err) => {
   if(!err) {
     models.sequelize.sync()
