@@ -1,13 +1,55 @@
 import React, { Component } from 'react';
+import { reduxForm, Field } from 'redux-form';
+
+import CustomInput from './CustomInput';
 
 class SignUp extends Component {
-  render(){
+
+  onSubmit = (formData) => {
+    console.log('onSubmit() called')
+    console.log('formData', formData)
+  }
+  render() {
+    // We have access to handleSubmit because of 'redux-form'
+    const { handleSubmit } = this.props
     return (
-      <div>
-        This is a SignUp component
+      <div className="row">
+        <div className="col">
+          <form onSubmit={handleSubmit(this.onSubmit)}>
+            <fieldset>
+              <Field
+                name="email"
+                type="text"
+                id="email"
+                label="Enter your email"
+                placeholder="example@example.com"
+                component={CustomInput} />
+            </fieldset>
+            <fieldset>
+              <Field
+                name="password"
+                type="password"
+                id="password"
+                label="Enter your password"
+                placeholder="yoursuperpassword"
+                component={CustomInput} />
+            </fieldset>
+
+            <button type="submit" className="btn btn-primary">Sign Up</button>
+
+          </form>
+        </div>
+        <div className="col">
+          <div className="text-center">
+            <div className="alert alert-primary">
+              Or sign up using third-party services
+            </div>
+            <button className="btn btn-default">Google</button>
+          </div>
+        </div>
       </div>
     );
   };
 };
 
-export default SignUp
+export default reduxForm({ form: 'signup' })(SignUp)
