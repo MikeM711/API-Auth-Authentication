@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import GoogleLogin from 'react-google-login';
 
 import * as actions from '../actions'
 import CustomInput from './CustomInput';
+import config from '../config'
 
 class SignUp extends Component {
   constructor(props) {
@@ -18,6 +20,11 @@ class SignUp extends Component {
     // we need to call some actionCreator
     this.props.signUp(formData)
   }
+
+  responseGoogle = (res) => {
+    console.log('responseGoogle', res);
+  }
+
   render() {
     // We have access to handleSubmit because of 'redux-form'
     const { handleSubmit } = this.props
@@ -44,6 +51,11 @@ class SignUp extends Component {
                 component={CustomInput} />
             </fieldset>
 
+            {this.props.errorMessage ? (
+              <div className="alert alert-danger">
+                {this.props.errorMessage}
+              </div>) : (null)}
+
             <button type="submit" className="btn btn-primary">Sign Up</button>
 
           </form>
@@ -53,7 +65,14 @@ class SignUp extends Component {
             <div className="alert alert-primary">
               Or sign up using third-party services
             </div>
-            <button className="btn btn-default">Google</button>
+            
+            <GoogleLogin
+              clientId={config.oauth.google.clientID}
+              buttonText="Google"
+              onSuccess={this.responseGoogle}
+              onFailure={this.responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
           </div>
         </div>
       </div>
@@ -61,9 +80,16 @@ class SignUp extends Component {
   };
 };
 
+function mapStateToProps(state) {
+  // state is "Redux State"
+  return {
+    errorMessage: state.auth.errorMessage
+  }
+}
+
 const enhance = compose(
   reduxForm({ form: 'signup' }),
-  connect(null, actions),
+  connect(mapStateToProps, actions),
 )
 
 export default enhance(SignUp);
