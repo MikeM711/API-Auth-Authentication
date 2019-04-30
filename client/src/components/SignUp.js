@@ -9,9 +9,19 @@ import CustomInput from './CustomInput';
 import config from '../config'
 
 class SignUp extends Component {
-  constructor(props) {
-    super(props);
-    this.onSubmit = this.onSubmit.bind(this);
+
+  componentDidMount() {
+    this.handleRedirect();
+  }
+
+  componentDidUpdate() {
+    this.handleRedirect();
+  }
+
+  handleRedirect = () => {
+    if (this.props.isAuthenticated) {
+      this.props.history.push('/dashboard');
+    }
   }
 
   onSubmit = (formData) => {
@@ -22,7 +32,9 @@ class SignUp extends Component {
   }
 
   responseGoogle = (res) => {
+    console.log(this.props)
     console.log('responseGoogle', res);
+    this.props.oauthGoogle(res.accessToken)
   }
 
   render() {
@@ -83,7 +95,8 @@ class SignUp extends Component {
 function mapStateToProps(state) {
   // state is "Redux State"
   return {
-    errorMessage: state.auth.errorMessage
+    errorMessage: state.auth.errorMessage,
+    isAuthenticated: state.auth.isAuthenticated
   }
 }
 
