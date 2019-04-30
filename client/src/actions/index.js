@@ -1,8 +1,30 @@
 import axios from 'axios'
-import { AUTH_SIGN_UP, AUTH_ERROR } from './types';
+import { AUTH_SIGN_UP, AUTH_SIGN_OUT, AUTH_ERROR } from './types';
 /*
   ActionCreators -> create/return Actions ({ }) -> dispatched -> middlewares -> reducers
 */
+
+export const oauthGoogle = data => {
+  return dispatch => {
+    console.log('we received', data)
+    axios.post('http://localhost:5000/users/oauth/google', {
+      access_token: data
+    })
+      .then(res => {
+        console.log('res', res)
+
+        dispatch({
+          type: AUTH_SIGN_UP,
+          payload: res.data.token
+        });
+
+        localStorage.setItem('JWT_TOKEN', res.data.token);
+
+      })
+      .catch(err => console.log(err))
+  }
+}
+ 
 
 // The signUp action creator
 export const signUp = (data) => {
@@ -36,4 +58,15 @@ export const signUp = (data) => {
 
       });
   }
+}
+
+export const signOut = () => {
+  return dispatch => {
+    localStorage.removeItem('JWT_TOKEN');
+
+    dispatch({
+      type: AUTH_SIGN_OUT,
+      payload: '',
+    })
+  };
 }

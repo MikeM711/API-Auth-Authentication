@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import * as actions from '../actions'
 
 class Header extends Component {
+  
+  signOut = () => {
+    console.log('signout got called')
+    this.props.signOut();
+  }
+
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{ marginBottom: '30px' }}>
@@ -15,21 +24,33 @@ class Header extends Component {
           </ul>
 
           <ul className="nav navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to="/signup" className="nav-link">Sign Up</Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/signin" className="nav-link">Sign In</Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/signout" className="nav-link">Sign Out</Link>
-            </li>
+
+            {!this.props.isAuth ?
+              ([<li className="nav-item" key="signup">
+                  <Link to="/signup" className="nav-link">Sign Up</Link>
+                </li>,
+                <li className="nav-item" key="signin">
+                  <Link to="/signin" className="nav-link">Sign In</Link>
+                </li>]
+              ) : (null)}
+
+            {this.props.isAuth ? (
+                <li className="nav-item">
+                  <Link to="/signout" className="nav-link" onClick={this.signOut}>Sign Out</Link>
+                </li>
+            ) : (null)}
+
           </ul>
-          
         </div>
       </nav>
     );
   };
 };
 
-export default Header
+function mapStateToProps(state) {
+  return {
+    isAuth: state.auth.isAuthenticated
+  }
+}
+
+export default connect(mapStateToProps, actions)(Header);
