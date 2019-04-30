@@ -1,5 +1,11 @@
 import axios from 'axios'
-import { AUTH_SIGN_UP, AUTH_SIGN_OUT, AUTH_ERROR } from './types';
+import { 
+  AUTH_SIGN_UP, 
+  AUTH_SIGN_OUT, 
+  AUTH_ERROR, 
+  AUTH_SIGN_IN, 
+  COMPONENT_MOUNT, 
+  DASHBOARD_GET_DATA } from './types';
 /*
   ActionCreators -> create/return Actions ({ }) -> dispatched -> middlewares -> reducers
 */
@@ -60,12 +66,77 @@ export const signUp = (data) => {
   }
 }
 
+// The signIn action creator
+export const signIn = (data) => {
+  /*
+    Step 1. Use the data and to make HTTP request to BE and send it along [X]
+    Step 2. Take the BE's response (jwtToken is here now!) [X]
+    Step 3. Dispatch user just signed up (with payload - jwtToken) [X]
+    Step 4. Save the jwtToken into our localStorage [X]
+  */
+  return dispatch => {
+    console.log('[ActionCreator] signIn called')
+    axios.post('http://localhost:5000/users/signin', data)
+      .then(res => {
+        console.log('res',res);
+        console.log('[ActionCreator] signIn dispatched an action')
+
+        dispatch({
+          type: AUTH_SIGN_IN,
+          payload: res.data.token,
+        });
+
+        localStorage.setItem('JWT_TOKEN', res.data.token);
+
+      })
+      .catch(err => {
+        console.log('[ActionCreator] signIn dispatched an action')
+        dispatch ({
+          type: AUTH_ERROR,
+          // Typically, you would want to catch an axios error and display it below, and NOT guess what the error is
+          payload: 'Email and password combination isn\'t valid '
+        });
+
+      });
+  }
+}
+
+export const getSecret = () => {
+  return dispatch => {
+    console.log('[ActionCreator] Trying to get BE\'s secret')
+    axios.get('http://localhost:5000/users/secret')
+    .then(res => {
+      console.log('res', res)
+
+      dispatch({
+        type: DASHBOARD_GET_DATA,
+        payload: res.data.secret
+      })
+
+    })
+    .catch(err => {
+      console.log('err', err)
+    })
+  }
+}
+
 export const signOut = () => {
   return dispatch => {
     localStorage.removeItem('JWT_TOKEN');
 
     dispatch({
       type: AUTH_SIGN_OUT,
+      payload: '',
+    })
+  };
+}
+
+// step 1 actionCreator, step 2 - create a new type
+export const componentMount = () => {
+  return dispatch => {
+
+    dispatch({
+      type: COMPONENT_MOUNT,
       payload: '',
     })
   };

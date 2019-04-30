@@ -11,6 +11,8 @@ import config from '../config'
 class SignUp extends Component {
 
   componentDidMount() {
+    // step 4.2, get the actionCreator and invoke it - SignUp
+    this.props.componentMount();
     this.handleRedirect();
   }
 
