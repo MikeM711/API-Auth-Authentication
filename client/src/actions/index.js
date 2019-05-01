@@ -24,7 +24,9 @@ export const oauthGoogle = data => {
           payload: res.data.token
         });
 
+        console.log(res.data.token)
         localStorage.setItem('JWT_TOKEN', res.data.token);
+        axios.defaults.headers.common['Authorization'] = res.data.token
 
       })
       .catch(err => console.log(err))
@@ -53,6 +55,7 @@ export const signUp = (data) => {
         });
 
         localStorage.setItem('JWT_TOKEN', res.data.token);
+        axios.defaults.headers.common['Authorization'] = res.data.token;
 
       })
       .catch(err => {
@@ -87,6 +90,7 @@ export const signIn = (data) => {
         });
 
         localStorage.setItem('JWT_TOKEN', res.data.token);
+        axios.defaults.headers.common['Authorization'] = res.data.token;
 
       })
       .catch(err => {
@@ -103,11 +107,14 @@ export const signIn = (data) => {
 
 export const getSecret = () => {
   return dispatch => {
+    // When Dashboard mounts, it does not successfully go through axios
+    // Unsuccessful GET of secret happens when headers are not set properly to the JWT token value
     console.log('[ActionCreator] Trying to get BE\'s secret')
+    console.log('headers: ', axios.defaults.headers.common['Authorization'])
     axios.get('http://localhost:5000/users/secret')
     .then(res => {
       console.log('res', res)
-
+      console.log('Dispatching Secret')
       dispatch({
         type: DASHBOARD_GET_DATA,
         payload: res.data.secret
@@ -123,6 +130,7 @@ export const getSecret = () => {
 export const signOut = () => {
   return dispatch => {
     localStorage.removeItem('JWT_TOKEN');
+    axios.defaults.headers.common['Authorization'] = '';
 
     dispatch({
       type: AUTH_SIGN_OUT,

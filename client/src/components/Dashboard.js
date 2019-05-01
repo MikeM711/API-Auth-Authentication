@@ -5,6 +5,7 @@ import * as actions from '../actions';
 class Dashboard extends Component {
 
   componentDidMount(){
+    console.log('componentDidMount')
     this.props.getSecret()
   }
 
@@ -12,9 +13,17 @@ class Dashboard extends Component {
     return (
       <div>
         This is a Dashboard component
+        <br/>
+        Our secret: <h3>{this.props.secret}</h3>
       </div>
     );
   };
 };
 
-export default connect(null, actions)(Dashboard)
+function mapStateToProps(state) {
+  return {
+    secret: state.dash.secret
+  }
+}
+
+export default connect(mapStateToProps, actions)(Dashboard)
