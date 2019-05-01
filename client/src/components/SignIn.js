@@ -12,16 +12,20 @@ class SignIn extends Component {
   constructor(props) {
     super(props);
     this.responseGoogle = this.responseGoogle.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
-  handleRedirect = () => {
+  async componentDidMount(){
+    // Erase error messages if component mounted
+    await this.props.componentMount();
+  }
+
+  async onSubmit(formData) {
+    await this.props.signIn(formData)
     if (this.props.isAuthenticated) {
       this.props.history.push('/dashboard');
     }
-  }
-
-  onSubmit = (formData) => {
-    this.props.signIn(formData)
   }
 
   async responseGoogle(res) {
