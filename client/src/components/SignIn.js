@@ -9,15 +9,9 @@ import CustomInput from './CustomInput';
 import config from '../config'
 
 class SignIn extends Component {
-
-  componentDidMount() {
-    // step 4.1, get the actionCreator and invoke it - SignIn
-    this.props.componentMount();
-    this.handleRedirect();
-  }
-
-  componentDidUpdate() {
-    this.handleRedirect();
+  constructor(props) {
+    super(props);
+    this.responseGoogle = this.responseGoogle.bind(this);
   }
 
   handleRedirect = () => {
@@ -30,8 +24,11 @@ class SignIn extends Component {
     this.props.signIn(formData)
   }
 
-  responseGoogle = (res) => {
-    this.props.oauthGoogle(res.accessToken)
+  async responseGoogle(res) {
+    await this.props.oauthGoogle(res.accessToken)
+    if (!this.props.errorMessage) {
+      this.props.history.push('/dashboard');
+    }
   }
 
   render() {
