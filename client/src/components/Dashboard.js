@@ -4,9 +4,9 @@ import * as actions from '../actions';
 
 class Dashboard extends Component {
 
-  componentDidMount(){
+  async componentDidMount(){
     console.log('componentDidMount')
-    this.props.getSecret()
+    await this.props.getSecret()
   }
 
   render(){

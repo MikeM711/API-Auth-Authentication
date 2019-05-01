@@ -12,13 +12,22 @@ class SignUp extends Component {
   constructor(props) {
     super(props);
     this.responseGoogle = this.responseGoogle.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit = (formData) => {
+  async componentDidMount(){
+    // Erase error messages if component mounted
+    await this.props.componentMount();
+  }
+
+  async onSubmit(formData) {
     console.log('onSubmit() called')
     console.log('formData', formData)
     // we need to call some actionCreator
-    this.props.signUp(formData)
+    await this.props.signUp(formData)
+    if (!this.props.errorMessage) {
+      this.props.history.push('/dashboard');
+    }
   }
 
   async responseGoogle(res) {

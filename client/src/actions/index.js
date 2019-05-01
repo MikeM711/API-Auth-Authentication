@@ -38,30 +38,29 @@ export const signUp = (data) => {
     Step 3. Dispatch user just signed up (with payload - jwtToken) [X]
     Step 4. Save the jwtToken into our localStorage [X]
   */
-  return dispatch => {
-    console.log('[ActionCreator] signUp called')
-    axios.post('http://localhost:5000/users/signup', data)
-      .then(res => {
-        console.log('res',res);
-        console.log('[ActionCreator] signUp dispatched an action')
+  return async dispatch => {
+    try {
+      console.log('[ActionCreator] signUp called')
+      const res = await axios.post('http://localhost:5000/users/signup', data)
 
-        dispatch({
-          type: AUTH_SIGN_UP,
-          payload: res.data.token,
-        });
+      console.log('res', res);
+      console.log('[ActionCreator] signUp dispatched an action')
 
-        localStorage.setItem('JWT_TOKEN', res.data.token);
-        axios.defaults.headers.common['Authorization'] = res.data.token;
-
-      })
-      .catch(err => {
-        console.log('[ActionCreator] signUp dispatched an action')
-        dispatch ({
-          type: AUTH_ERROR,
-          payload: 'Email is already in use'
-        });
-
+      dispatch({
+        type: AUTH_SIGN_UP,
+        payload: res.data.token,
       });
+
+      localStorage.setItem('JWT_TOKEN', res.data.token);
+      axios.defaults.headers.common['Authorization'] = res.data.token;
+    }
+    catch(err) {
+      console.log('[ActionCreator] signUp dispatched an action')
+      dispatch ({
+        type: AUTH_ERROR,
+        payload: 'Email is already in use'
+      });
+    }
   }
 }
 
@@ -73,53 +72,55 @@ export const signIn = (data) => {
     Step 3. Dispatch user just signed up (with payload - jwtToken) [X]
     Step 4. Save the jwtToken into our localStorage [X]
   */
-  return dispatch => {
-    console.log('[ActionCreator] signIn called')
-    axios.post('http://localhost:5000/users/signin', data)
-      .then(res => {
-        console.log('res',res);
-        console.log('[ActionCreator] signIn dispatched an action')
+  return async dispatch => {
+    try {
+      console.log('[ActionCreator] signIn called')
+      const res = await axios.post('http://localhost:5000/users/signin', data)
 
-        dispatch({
-          type: AUTH_SIGN_IN,
-          payload: res.data.token,
-        });
+      console.log('res', res);
+      console.log('[ActionCreator] signIn dispatched an action')
 
-        localStorage.setItem('JWT_TOKEN', res.data.token);
-        axios.defaults.headers.common['Authorization'] = res.data.token;
-
-      })
-      .catch(err => {
-        console.log('[ActionCreator] signIn dispatched an action')
-        dispatch ({
-          type: AUTH_ERROR,
-          // Typically, you would want to catch an axios error and display it below, and NOT guess what the error is
-          payload: 'Email and password combination isn\'t valid '
-        });
-
+      dispatch({
+        type: AUTH_SIGN_IN,
+        payload: res.data.token,
       });
+
+      localStorage.setItem('JWT_TOKEN', res.data.token);
+      axios.defaults.headers.common['Authorization'] = res.data.token;
+    }
+    catch(err) {
+      console.log('[ActionCreator] signIn dispatched an action')
+      dispatch ({
+        type: AUTH_ERROR,
+        // Typically, you would want to catch an axios error and display it below, and NOT guess what the error is
+        payload: 'Email and password combination isn\'t valid '
+      });
+    }
   }
 }
 
 export const getSecret = () => {
-  return dispatch => {
-    // When Dashboard mounts, it does not successfully go through axios
-    // Unsuccessful GET of secret happens when headers are not set properly to the JWT token value
-    console.log('[ActionCreator] Trying to get BE\'s secret')
-    console.log('headers: ', axios.defaults.headers.common['Authorization'])
-    axios.get('http://localhost:5000/users/secret')
-    .then(res => {
+  return async dispatch => {
+    try {
+
+      // When Dashboard mounts, it does not successfully go through axios
+      // Unsuccessful GET of secret happens when headers are not set properly to the JWT token value
+      console.log('[ActionCreator] Trying to get BE\'s secret')
+      console.log('headers: ', axios.defaults.headers.common['Authorization'])
+      const res = await axios.get('http://localhost:5000/users/secret')
+
       console.log('res', res)
       console.log('Dispatching Secret')
+
       dispatch({
         type: DASHBOARD_GET_DATA,
         payload: res.data.secret
       })
 
-    })
-    .catch(err => {
+    }
+    catch(err) {
       console.log('err', err)
-    })
+    }
   }
 }
 
@@ -137,7 +138,7 @@ export const signOut = () => {
 
 // step 1 actionCreator, step 2 - create a new type
 export const componentMount = () => {
-  return dispatch => {
+  return async dispatch => {
 
     dispatch({
       type: COMPONENT_MOUNT,
