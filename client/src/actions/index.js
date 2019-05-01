@@ -11,26 +11,22 @@ import {
 */
 
 export const oauthGoogle = data => {
-  return dispatch => {
+  return async dispatch => {
     console.log('we received', data)
-    axios.post('http://localhost:5000/users/oauth/google', {
+    const res = await axios.post('http://localhost:5000/users/oauth/google', {
       access_token: data
-    })
-      .then(res => {
-        console.log('res', res)
+    });
 
-        dispatch({
-          type: AUTH_SIGN_UP,
-          payload: res.data.token
-        });
+    console.log('res', res)
 
-        console.log(res.data.token)
-        localStorage.setItem('JWT_TOKEN', res.data.token);
-        axios.defaults.headers.common['Authorization'] = res.data.token
+    dispatch({
+      type: AUTH_SIGN_UP,
+      payload: res.data.token
+    });
 
-      })
-      .catch(err => console.log(err))
-  }
+    localStorage.setItem('JWT_TOKEN', res.data.token);
+    axios.defaults.headers.common['Authorization'] = res.data.token;
+  };
 }
  
 

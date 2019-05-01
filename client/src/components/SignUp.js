@@ -9,21 +9,9 @@ import CustomInput from './CustomInput';
 import config from '../config'
 
 class SignUp extends Component {
-
-  componentDidMount() {
-    // step 4.2, get the actionCreator and invoke it - SignUp
-    this.props.componentMount();
-    this.handleRedirect();
-  }
-
-  componentDidUpdate() {
-    this.handleRedirect();
-  }
-
-  handleRedirect = () => {
-    if (this.props.isAuthenticated) {
-      this.props.history.push('/dashboard');
-    }
+  constructor(props) {
+    super(props);
+    this.responseGoogle = this.responseGoogle.bind(this);
   }
 
   onSubmit = (formData) => {
@@ -33,10 +21,12 @@ class SignUp extends Component {
     this.props.signUp(formData)
   }
 
-  responseGoogle = (res) => {
-    console.log(this.props)
+  async responseGoogle(res) {
     console.log('responseGoogle', res);
-    this.props.oauthGoogle(res.accessToken)
+    await this.props.oauthGoogle(res.accessToken)
+    if (!this.props.errorMessage) {
+      this.props.history.push('/dashboard');
+    }
   }
 
   render() {
