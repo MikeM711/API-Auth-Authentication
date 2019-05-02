@@ -5,7 +5,12 @@ const cors = require('cors')
 
 const app = express();
 
-app.use(cors());
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
 
 //Middleware
 app.use(morgan('dev'));
