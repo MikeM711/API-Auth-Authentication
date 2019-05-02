@@ -55,14 +55,19 @@ export const signUp = (data) => {
       axios.defaults.headers.common['Authorization'] = res.data.token;
     }
     catch(err) {
-      console.log('[ActionCreator] signUp dispatched an action')
+      console.log('[ActionCreator] signUp dispatched a failed action')
+
+      console.log(err.response)
 
       if(err.response.data.details){
         var signUpErr = err.response.data.details[0].message
+      } else if(err.response.data.clientErr) {
+        signUpErr = err.response.data.clientErr
       } else if(err.response.data.error) {
         signUpErr = err.response.data.error
       } else {
-        signUpErr = "Invalid Credentials"
+        // If I missed any errors to handle:
+        signUpErr = "Unauthorized - Please Handle"
       }
       
       dispatch ({
@@ -98,17 +103,18 @@ export const signIn = (data) => {
       axios.defaults.headers.common['Authorization'] = res.data.token;
     }
     catch(err) {
-      console.log('[ActionCreator] signIn dispatched an action')
+      console.log('[ActionCreator] signIn dispatched a failed action')
 
       console.log(err.response)
       console.log('err',err)
 
       if(err.response.data.details){
         var signInErr = err.response.data.details[0].message
-      } else if(err.response.data) {
-        signInErr = err.response.data
+      } else if(err.response.data.message) {
+        signInErr = err.response.data.message
       } else {
-        signInErr = "Invalid Credentials"
+        // If I missed any errors to handle:
+        signInErr = "Validation Error - Please Handle"
       }
 
       dispatch ({

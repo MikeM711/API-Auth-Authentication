@@ -18,6 +18,9 @@ module.exports = {
 
     const { email, password } = req.value.body
 
+    // Convert the email to lowercase, we made sure that the DB only accepts lowercase emails
+    const emailLC = email.toLowerCase()
+
     // Generate salt and hash
     var generateHash = function(password) {
       return bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
@@ -27,7 +30,7 @@ module.exports = {
 
     const newUser = {
       method: 'local',
-      email: email,
+      email: emailLC,
       password: userPassword,
     }
 
@@ -58,7 +61,9 @@ module.exports = {
             })
             .catch((err) => {
               console.log(err, "not successfully added to the database")
-              res.status(400).json({ err });
+              // Execution shouldn't land here, but just in case
+              const clientErr = "User was not successfully added to the database - Please Handle"
+              res.status(400).json({ clientErr });
             })
         }
       })

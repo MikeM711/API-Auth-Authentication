@@ -95,6 +95,9 @@ passport.use(new LocalStrategy({
   usernameField: 'email'
 }, (email, password, done) => {
 
+  // Convert the email to lowercase, we made sure that the DB only accepts lowercase emails
+  const emailLC = email.toLowerCase()
+
   // compare plain text password with hashed password
   var isValidPassword = function (userpass, password) {
     return bCrypt.compareSync(password, userpass);
@@ -103,13 +106,14 @@ passport.use(new LocalStrategy({
   // Find the user, given the email
   user.findOne({
     where: {
-      email: email
+      email: emailLC
     }
   })
     .then(currUser => {
       // If user doesn't exist, handle it
       if (!currUser) {
-        return done(null, false)
+        console.log('user is not found in DB')
+        return done(null, false, 'This user does not exist in the database')
       }
 
       // Check if the password is correct
@@ -117,7 +121,7 @@ passport.use(new LocalStrategy({
       // If password is not correct, handle it
       if (!isValidPassword(currUser.password, password)) {
         // no errors, but you won't get the user object, because the password isn't correct
-        return done(null, false);
+        return done(null, false, 'Password is incorrect');
       }
 
       // Otherwise, return the user that the client has asked for
