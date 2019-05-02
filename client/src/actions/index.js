@@ -13,7 +13,7 @@ import {
 export const oauthGoogle = data => {
   return async dispatch => {
     console.log('we received', data)
-    const res = await axios.post('http://localhost:5000/users/oauth/google', {
+    const res = await axios.post('/users/oauth/google', {
       access_token: data
     });
 
@@ -56,9 +56,18 @@ export const signUp = (data) => {
     }
     catch(err) {
       console.log('[ActionCreator] signUp dispatched an action')
+
+      if(err.response.data.details){
+        var signUpErr = err.response.data.details[0].message
+      } else if(err.response.data.error) {
+        signUpErr = err.response.data.error
+      } else {
+        signUpErr = "Invalid Credentials"
+      }
+      
       dispatch ({
         type: AUTH_ERROR,
-        payload: 'Email is already in use'
+        payload: signUpErr
       });
     }
   }
@@ -90,10 +99,22 @@ export const signIn = (data) => {
     }
     catch(err) {
       console.log('[ActionCreator] signIn dispatched an action')
+
+      console.log(err.response)
+      console.log('err',err)
+
+      if(err.response.data.details){
+        var signInErr = err.response.data.details[0].message
+      } else if(err.response.data) {
+        signInErr = err.response.data
+      } else {
+        signInErr = "Invalid Credentials"
+      }
+
       dispatch ({
         type: AUTH_ERROR,
         // Typically, you would want to catch an axios error and display it below, and NOT guess what the error is
-        payload: 'Email and password combination isn\'t valid '
+        payload: signInErr
       });
     }
   }
