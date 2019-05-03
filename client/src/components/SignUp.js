@@ -80,7 +80,7 @@ class SignUp extends Component {
             </div>
             
             <GoogleLogin
-              clientId={config.oauth.google.clientID}
+              clientId={process.env.GOOGLE_CLIENT_KEY || config.oauth.google.clientID}
               buttonText="Google"
               onSuccess={this.responseGoogle}
               onFailure={this.responseGoogle}
