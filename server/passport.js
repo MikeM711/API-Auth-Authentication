@@ -44,8 +44,8 @@ passport.use(new JwtStrategy({
     })
 }));
 
-const clientIdKey = process.env.GOOGLE_CLIENT_KEY || config.oauth.google.clientID
-const clientSecretKey = process.env.GOOGLE_SECRET_KEY || config.oauth.google.clientSecret
+const clientIdKey = process.env.GOOGLE_CLIENT_KEY
+const clientSecretKey = process.env.GOOGLE_SECRET_KEY
 
 // GOOGLE OAUTH STRATEGY
 passport.use('googleToken', new GooglePlusTokenStrategy({
