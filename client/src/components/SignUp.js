@@ -79,7 +79,7 @@ class SignUp extends Component {
             </div>
             
             <GoogleLogin
-              clientId={process.env.REACT_APP_GOOGLE_CLIENT_KEY}
+            clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_KEY}`}
               buttonText="Google"
               onSuccess={this.responseGoogle}
               onFailure={this.responseGoogle}
