@@ -6,13 +6,14 @@ var Sequelize = require('sequelize');
 var basename = path.basename(__filename);
 var env = process.env.NODE_ENV || 'development';
 
-if (env === 'production') {
-  var sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres',
-    protocol: 'postgres',
-  });
- }
+// if (env === 'production') {
+//   var sequelize = new Sequelize(process.env.DATABASE_URL, {
+//     dialect: 'postgres',
+//     protocol: 'postgres',
+//   });
+//  }
  
+// Add this to config.json: "use_env_variable": "DATABASE_URL", in PRODUCTION
 
 var config = require(__dirname + '/../config/config.json')[env];
 var db = {};
