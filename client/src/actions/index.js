@@ -41,7 +41,7 @@ export const signUp = (data) => {
   return async dispatch => {
     try {
       console.log('[ActionCreator] signUp called')
-      const res = await axios.post('http://localhost:5000/users/signup', data)
+      const res = await axios.post('/users/signup', data)
 
       console.log('res', res);
       console.log('[ActionCreator] signUp dispatched an action')
@@ -89,7 +89,7 @@ export const signIn = (data) => {
   return async dispatch => {
     try {
       console.log('[ActionCreator] signIn called')
-      const res = await axios.post('http://localhost:5000/users/signin', data)
+      const res = await axios.post('/users/signin', data)
 
       console.log('res', res);
       console.log('[ActionCreator] signIn dispatched an action')
@@ -134,7 +134,7 @@ export const getSecret = () => {
       // Unsuccessful GET of secret happens when headers are not set properly to the JWT token value
       console.log('[ActionCreator] Trying to get BE\'s secret')
       console.log('headers: ', axios.defaults.headers.common['Authorization'])
-      const res = await axios.get('http://localhost:5000/users/secret')
+      const res = await axios.get('/users/secret')
 
       console.log('res', res)
       console.log('Dispatching Secret')

@@ -6,7 +6,6 @@ import GoogleLogin from 'react-google-login';
 
 import * as actions from '../actions'
 import CustomInput from './CustomInput';
-import config from '../config'
 
 class SignIn extends Component {
   constructor(props) {
@@ -77,7 +76,7 @@ class SignIn extends Component {
             </div>
             
             <GoogleLogin
-              clientId={config.oauth.google.clientID}
+              clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_KEY}`}
               buttonText="Google"
               onSuccess={this.responseGoogle}
               onFailure={this.responseGoogle}
