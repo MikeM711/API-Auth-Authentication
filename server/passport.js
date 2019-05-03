@@ -7,18 +7,18 @@ const bCrypt = require('bcryptjs');
 const { user } = require('./models')
 
 
-if (process.env.NODE_ENV === 'production') {
-  // we are in production - return the prod set of keys
-} else {
-  // we are in development - return the dev keys!!
-  var config = require('./config')
-}
+// if (process.env.NODE_ENV === 'production') {
+//   // we are in production - return the prod set of keys
+// } else {
+//   // we are in development - return the dev keys!!
+//   var config = require('./config')
+// }
 
 
 // JSON WEB TOKEN STRATEGY
 passport.use(new JwtStrategy({
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-  secretOrKey: config.JWT_SECRET
+  secretOrKey: process.env.JWT_SECRET
 }, (payload, done) => {
 
   // Find the users specified in token
