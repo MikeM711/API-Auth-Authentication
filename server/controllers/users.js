@@ -1,7 +1,6 @@
 const JWT = require('jsonwebtoken');
 const bCrypt = require('bcryptjs');
 const { user } = require('../models')
-// const { JWT_SECRET } = require('../config/index.js')
 
 signToken = user => {
   return JWT.sign({

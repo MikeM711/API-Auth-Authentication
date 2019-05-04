@@ -3,22 +3,20 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser');
 const cors = require('cors')
 const path = require('path');
-require('dotenv').config()
+const dotenv = require('dotenv').config()
 
 const app = express();
 
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, '../client/build')));
 
-// BELOW: We will allow a heroku link to share access in the future
+// Allowed origins
 const corsOptions = {
   origin: `${process.env.ALLOWED_ORIGINS}`,
   optionsSuccessStatus: 200
 }
 
 app.use(cors(corsOptions));
-
-// app.use(cors())
 
 //Middleware
 app.use(morgan('dev'));

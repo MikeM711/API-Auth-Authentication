@@ -6,15 +6,6 @@ const GooglePlusTokenStrategy = require('passport-google-plus-token')
 const bCrypt = require('bcryptjs');
 const { user } = require('./models')
 
-
-// if (process.env.NODE_ENV === 'production') {
-//   // we are in production - return the prod set of keys
-// } else {
-//   // we are in development - return the dev keys!!
-//   var config = require('./config')
-// }
-
-
 // JSON WEB TOKEN STRATEGY
 passport.use(new JwtStrategy({
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),
