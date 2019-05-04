@@ -8,7 +8,7 @@ const dotenv = require('dotenv').config()
 const app = express();
 
 // Serve the static files from the React app
-app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '/../client/build')));
 
 // Allowed origins
 const corsOptions = {
