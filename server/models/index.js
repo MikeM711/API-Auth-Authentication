@@ -6,6 +6,7 @@ var Sequelize = require('sequelize');
 var basename = path.basename(__filename);
 var env = process.env.NODE_ENV || 'development';
 
+// Along with the following: I had "use_env_variable": "DATABASE_URL" in config.json for "production"
 if (env === 'production') {
   var sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
