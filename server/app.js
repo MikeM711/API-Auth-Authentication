@@ -11,15 +11,14 @@ const app = express();
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 // BELOW: We will allow a heroku link to share access in the future
+const corsOptions = {
+  origin: `${process.env.ALLOWED_ORIGINS}`,
+  optionsSuccessStatus: 200
+}
 
-// var corsOptions = {
-//   origin: 'http://localhost:3000',
-//   optionsSuccessStatus: 200
-// }
+app.use(cors(corsOptions));
 
-// app.use(cors(corsOptions));
-
-app.use(cors())
+// app.use(cors())
 
 //Middleware
 app.use(morgan('dev'));
