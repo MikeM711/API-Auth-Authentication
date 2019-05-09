@@ -26,7 +26,7 @@ passport.use(new JwtStrategy({
 
       // Otherwise, return the user
       if (DBuser) {
-        return done(null, user);
+        return done(null, DBuser);
       }
     })
     .catch(err => {
